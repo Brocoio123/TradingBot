@@ -178,8 +178,23 @@ def perform_item_capture(itemCaptured):
         os.remove("Capture.png")
     return item_price
 
+
+def login ():
+    move_mouse_human(903, 419)
+    click()
+    keyboard_type_human("Dado1241942")
+    time.sleep(1)
+    move_mouse_human(959, 570)
+    click()
+    time.sleep(20)
+    move_mouse_human(816, 531)
+    click()
+
+def is_rentable():
+    print("yes")
 #lowest price per bulk per unit
 def bulkBuY(p1, p10, p100):
+    #while()
     b = "1"
     if p10/10 < p1:
         b = "10"
@@ -188,14 +203,16 @@ def bulkBuY(p1, p10, p100):
         b = "100"
 
     return b
+
 def movementScript():
-    i = 0;
+    i = 0
     currentItem = ""
+    #login()
+
     with open("items.json", 'r') as f:
         items = json.load(f)
 
     while i < len(items):
-        print(items)
         currentItem = items[str(i)]
         datetimeobj = datetime.now()
         if not os.path.exists("json/"+currentItem+".json"):
@@ -218,6 +235,8 @@ def movementScript():
             print("ELSEEEEEE")
             # json_string = oldJson
             a = 0
+            print(json.dumps(json_string, indent=4, sort_keys=True))
+
             json_string[str(datetimeobj.day)][str(datetimeobj.hour)] = {
 
             }
