@@ -14,15 +14,17 @@ import time
 from scipy import interpolate
 
 arrayCoordinates = []
-#arrayCoordinates:ne
+# arrayCoordinates:ne
 arrayCoordinates = [(978.0, 256.0), (1032.0, 293.0), (955.0, 296.0), (1028.0, 330.0), (946.0, 339.0), (1029.0, 371.0)]
 pytesseract.pytesseract.tesseract_cmd = r"C:\Users\Everardo\AppData\Local\Tesseract-OCR\tesseract.exe"
 hastyped = ""
 
+
 def average_price_yesterday():
     with open("prices.json", 'r') as f:
         datastore = json.load(f)
-    #average =
+    # average =
+
 
 # precisa de trabalho, não faz uma curva
 def move_mouse_human(movetox, movetoy):
@@ -63,7 +65,8 @@ def click():
     pyautogui.click()
     time.sleep(0.4)
 
-#def mouse_move_check_duplicate_item():
+
+# def mouse_move_check_duplicate_item():
 
 
 def keyboard_type_human(stringType):
@@ -98,7 +101,8 @@ def take_Screenshot(path):
 
 
 def ocr_core(filename):
-    text = pytesseract.image_to_string((Image.open(filename)), lang='eng', config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789')
+    text = pytesseract.image_to_string((Image.open(filename)), lang='eng',
+                                       config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789')
     print(text)
     print("OCR")
     return text
@@ -107,6 +111,7 @@ def ocr_core(filename):
 # as instrucoes
 def returntypedstring(sourceVal, varToSet):
     sourceVal = varToSet
+
 
 def backspace():
     pyautogui.press('backspace')
@@ -129,8 +134,6 @@ def backspace():
 
 # input:nom de l'item. output:prix pous 1,10 et 100 items
 def perform_item_capture(itemCaptured):
-
-
     take_Screenshot('Capture.png')
     count1 = 0
     count10 = 0
@@ -179,7 +182,7 @@ def perform_item_capture(itemCaptured):
     return item_price
 
 
-def login ():
+def login():
     move_mouse_human(903, 419)
     click()
     keyboard_type_human("Dado1241942")
@@ -190,24 +193,73 @@ def login ():
     move_mouse_human(816, 531)
     click()
 
+
 def is_rentable():
     print("yes")
-#lowest price per bulk per unit
-def bulkBuY(p1, p10, p100):
-    #while()
-    b = "1"
-    if p10/10 < p1:
-        b = "10"
 
-    if p100/100 < p10:
-        b = "100"
 
-    return b
+def average_price(currentItem, day):
+    datetimeobj = datetime.now()
+    with open("json/" + currentItem + ".json", 'r') as f:
+        json_string = json.load(f)
+
+    loop = True
+    i = 0
+    average = {}
+    while loop:
+        average = json_string[day][i][currentItem]  # add value
+    for x in range(len()):
+        innerlist = []
+        for y in range(10):
+            innerlist.append(y)
+            average.append(innerlist)
+
+    json_string[datetimeobj.day][datetimeobj.hour][currentItem][0]
+
+
+# lowest price per bulk per unit
+def bulk_buy(currentItem):
+    loop = True
+    b = ""
+    buyprice = 0
+    datetimeobj = datetime.now()
+
+    with open("json/" + currentItem + ".json", 'r') as f:
+        json_string = json.load(f)
+
+    p1 = json_string[str(datetimeobj.day)][str(datetimeobj.hour)][str(currentItem)][0]
+    p10 = json_string[str(datetimeobj.day)][str(datetimeobj.hour)][str(currentItem)][1]
+    p100 = json_string[str(datetimeobj.day)][str(datetimeobj.hour)][str(currentItem)][2]
+
+    while loop:
+        b = "1"
+        if p10 / 10 < p1:
+            b = "10"
+
+        if p100 / 100 < p10:
+            b = "100"
+
+    if b == "1":
+        ocr_core()
+        move_mouse_human(move_mouse_human(1337, 420))
+        click()
+
+    elif b == "10":
+        move_mouse_human(1337, 420)
+        click()
+
+    elif b == "100":
+        move_mouse_human(1337, 420)
+        click()
+
+    #if
+    return buyprice
+
 
 def movementScript():
     i = 0
     currentItem = ""
-    #login()
+    # login()
 
     with open("items.json", 'r') as f:
         items = json.load(f)
@@ -215,13 +267,13 @@ def movementScript():
     while i < len(items):
         currentItem = items[str(i)]
         datetimeobj = datetime.now()
-        if not os.path.exists("json/"+currentItem+".json"):
+        if not os.path.exists("json/" + currentItem + ".json"):
             with open("json/" + currentItem + ".json", 'w+') as f:
                 f.write("{}")
             with open("json/" + currentItem + ".json", 'r') as f:
                 json_string = json.load(f)
         else:
-            with open("json/"+currentItem+".json", 'r') as f:
+            with open("json/" + currentItem + ".json", 'r') as f:
                 json_string = json.load(f)
 
         if bool(json_string) == False:
@@ -242,7 +294,7 @@ def movementScript():
             }
         print(json_string)
         move_mouse_human(520, 212)
-        #time.sleep(0.8)
+        # time.sleep(0.8)
         click()
         backspace()
         itemCaptured = keyboard_type_human(currentItem)
@@ -253,9 +305,10 @@ def movementScript():
         print(json_string)
         print(stringAppend)
         json_string[str(datetimeobj.day)][str(datetimeobj.hour)] = stringAppend
-        with open("json/"+currentItem+'.json', 'w') as json_file:
+        with open("json/" + currentItem + '.json', 'w') as json_file:
             json.dump(json_string, json_file, indent=4, sort_keys=True)
         i = i + 1
+
 
 class MainWindow:
     def __init__(self, master):
